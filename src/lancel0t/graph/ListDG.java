@@ -6,7 +6,7 @@
  * @author lancel0t
  * @date 2018年5月10日
  */
-package pers.lancel0t.da.graph;
+package lancel0t.graph;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

@@ -5,7 +5,7 @@
  * @author lancel0t
  * @date 2018年5月10日
  */
-package pers.lancel0t.da.classic;
+package lancel0t.classic;
 
 import java.util.Scanner;
 

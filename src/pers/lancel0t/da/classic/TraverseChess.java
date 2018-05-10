@@ -6,6 +6,7 @@
  * @date 2018年5月10日
  */
 package pers.lancel0t.da.classic;
+
 import java.util.Scanner;
 
 //马踏棋盘
@@ -38,14 +39,14 @@ public class TraverseChess {
 	private boolean find(int x, int y, int dept) {
 		int xx, yy;
 		for (int i = 0; i < 8; i++) {
-			//移动到下一步
+			// 移动到下一步
 			xx = x + fx[i];
 			yy = y + fy[i];
 
 			// 如果下一步有效
 			if (check(xx, yy)) {
 				board[xx][yy] = dept;
-				
+
 				// 如果遍历完成，打印结果
 				if (dept == 64) {
 					printResult();
@@ -55,8 +56,8 @@ public class TraverseChess {
 				// 如果遍历未完成，继续走位
 				if (find(xx, yy, dept + 1)) {
 					return true;
-				} else{
-					board[xx][yy]=0;
+				} else {
+					board[xx][yy] = 0;
 				}
 			}
 		}
@@ -65,12 +66,12 @@ public class TraverseChess {
 
 	public static void main(String[] args) {
 
-		Scanner scan = new Scanner(System.in);		
+		Scanner scan = new Scanner(System.in);
 		int row = 0, col = 0;
-		System.out.println("请输入棋盘第几行：");
-		row=scan.nextInt();
-		System.out.println("请输入棋盘第几列：");
-		col=scan.nextInt();
+		System.out.printf("请输入棋盘第几行：");
+		row = scan.nextInt();
+		System.out.printf("请输入棋盘第几列：");
+		col = scan.nextInt();
 		scan.close();
 
 		TraverseChess tc = new TraverseChess();

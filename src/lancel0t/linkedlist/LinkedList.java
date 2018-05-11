@@ -10,13 +10,23 @@ package lancel0t.linkedlist;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LinkedList<T> {
+public class LinkedList {
 
-	// 链表头指针
-	private ListNode<T> head = new ListNode<T>();
+	// 链表节点
+	public class ListNode<T> {
+		public T val;
+		public ListNode<T> next;
+
+		public ListNode() {
+		}
+
+		public ListNode(T x) {
+			val = x;
+		}
+	}
 
 	// 尾部添加新节点
-	public void addToTail(T value) {
+	public <T> void addToTail(ListNode<T> head, T value) {
 		ListNode<T> newNode = new ListNode<T>(value);
 		if (head.next == null) {
 			head.next = newNode;
@@ -30,7 +40,7 @@ public class LinkedList<T> {
 	}
 
 	// 打印链表
-	public void print() {
+	public <T> void print(ListNode<T> head) {
 		ListNode<T> currNode = head.next;
 		List<String> values = new ArrayList<String>();
 		while (currNode != null) {
@@ -41,7 +51,7 @@ public class LinkedList<T> {
 	}
 
 	// 逆转链表
-	public void ReverseList() {
+	public <T> ListNode<T> ReverseList(ListNode<T> head) {
 		ListNode<T> reverse = new ListNode<T>();
 		ListNode<T> curr = head.next;
 		while (curr != null) {
@@ -52,25 +62,27 @@ public class LinkedList<T> {
 			reverse.next = curr;
 			curr = nextTemp;
 		}
-		head.next = reverse.next;
+		return reverse;
 	}
 
 	public static void main(String[] args) {
 
-		LinkedList<Integer> linkedList = new LinkedList<Integer>();
-		
-		linkedList.addToTail(1);
-		linkedList.addToTail(2);
-		linkedList.addToTail(3);
-		linkedList.addToTail(4);
-		linkedList.addToTail(5);
+		LinkedList linkedList = new LinkedList();
+		// 声明头节点
+		ListNode<Integer> head = linkedList.new ListNode<Integer>();
+
+		linkedList.addToTail(head, 1);
+		linkedList.addToTail(head, 2);
+		linkedList.addToTail(head, 3);
+		linkedList.addToTail(head, 4);
+		linkedList.addToTail(head, 5);
 
 		System.out.println("== 原链表：");
-		linkedList.print();
+		linkedList.print(head);
 
-		linkedList.ReverseList();
+		ListNode<Integer> reverse = linkedList.ReverseList(head);
 		System.out.println("== 逆转链表：");
-		linkedList.print();
+		linkedList.print(reverse);
 	}
 
 }

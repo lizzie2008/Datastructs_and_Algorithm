@@ -9,6 +9,7 @@ package lancel0t.tree;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 
 public class BinaryTree {
 
@@ -51,30 +52,85 @@ public class BinaryTree {
 		return null;
 	}
 
-	// 前序遍历
+	// 前序遍历（递归实现）
+	public <T> void preOrderRecursive(BinaryTreeNode<T> root) {
+		if (root != null) {
+			System.out.print(root.value + " ");
+			preOrderRecursive(root.lChild);
+			preOrderRecursive(root.rChild);
+		}
+	}
+
+	// 前序遍历（优化实现）
 	public <T> void preOrder(BinaryTreeNode<T> root) {
-		if (root != null) {
-			System.out.print(root.value.toString() + " ");
-			preOrder(root.lChild);
-			preOrder(root.rChild);
+		Stack<BinaryTreeNode<T>> stack = new Stack<BinaryTreeNode<T>>();
+		while (root != null || !stack.isEmpty()) {
+			if (root != null) {
+				// 访问节点并入栈
+				System.out.print(root.value + " ");
+				stack.push(root);
+				// 访问左孩子
+				root = root.lChild;
+			} else {
+				// 回退根节点，访问右孩子
+				root = stack.pop();
+				root = root.rChild;
+			}
 		}
 	}
 
-	// 中序遍历
+	// 中序遍历（递归实现）
+	public <T> void inOrderRecursive(BinaryTreeNode<T> root) {
+		if (root != null) {
+			inOrderRecursive(root.lChild);
+			System.out.print(root.value + " ");
+			inOrderRecursive(root.rChild);
+		}
+	}
+
+	// 中序遍历（优化实现）
 	public <T> void inOrder(BinaryTreeNode<T> root) {
-		if (root != null) {
-			inOrder(root.lChild);
-			System.out.print(root.value.toString() + " ");
-			inOrder(root.rChild);
+		Stack<BinaryTreeNode<T>> stack = new Stack<BinaryTreeNode<T>>();
+		while (root != null || !stack.isEmpty()) {
+			if (root != null) {
+				// 节点入栈，访问左孩子
+				stack.push(root);
+				root = root.lChild;
+			} else {
+				// 回退根节点，访问右孩子
+				root = stack.pop();
+				System.out.print(root.value + " ");
+				root = root.rChild;
+			}
 		}
 	}
 
-	// 后序遍历
-	public <T> void postOrder(BinaryTreeNode<T> root) {
+	// 后序遍历（递归实现）
+	public <T> void postOrderRecursive(BinaryTreeNode<T> root) {
 		if (root != null) {
-			postOrder(root.lChild);
-			postOrder(root.rChild);
-			System.out.print(root.value.toString() + " ");
+			postOrderRecursive(root.lChild);
+			postOrderRecursive(root.rChild);
+			System.out.print(root.value + " ");
+		}
+	}
+
+	// 后序遍历（优化实现）
+	public <T> void postOrder(BinaryTreeNode<T> root) {
+		if (root == null)
+			return;
+		Stack<BinaryTreeNode<T>> stack = new Stack<BinaryTreeNode<T>>();
+		Stack<BinaryTreeNode<T>> output = new Stack<BinaryTreeNode<T>>();
+		stack.push(root);
+		while (!stack.isEmpty()) {
+			BinaryTreeNode<T> curr = stack.pop();
+			output.push(curr);
+			if (curr.lChild != null)
+				stack.push(curr.lChild);
+			if (curr.rChild != null)
+				stack.push(curr.rChild);
+		}
+		while (!output.isEmpty()) {
+			System.out.print(output.pop().value + " ");
 		}
 	}
 
@@ -88,12 +144,18 @@ public class BinaryTree {
 		BinaryTreeNode<Integer> root = tree.constuct(preOrderList, inOrderList);
 
 		System.out.println("== 前序遍历：");
+		tree.preOrderRecursive(root);
+		System.out.println();
 		tree.preOrder(root);
 		System.out.println();
 		System.out.println("== 中序遍历：");
+		tree.inOrderRecursive(root);
+		System.out.println();
 		tree.inOrder(root);
 		System.out.println();
 		System.out.println("== 后序遍历：");
+		tree.postOrderRecursive(root);
+		System.out.println();
 		tree.postOrder(root);
 		System.out.println();
 	}

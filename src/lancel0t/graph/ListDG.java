@@ -1,7 +1,7 @@
 /**
  * 
- * 无回路有向图(Directed Acyclic Graph)的拓扑排序
- * 通过邻接表实现的
+ * 有向无环图图(Directed Acyclic Graph)的拓扑排序
+ * 通过邻接表实现
  * 
  * @author lancel0t
  * @date 2018年5月10日
@@ -153,9 +153,9 @@ public class ListDG {
 	}
 
 	/*
-	 * 拓扑排序
-	 *
-	 * 返回值： -1 -- 失败(由于内存不足等原因导致) 0 -- 成功排序，并输入结果 1 -- 失败(该有向图是有环的)
+	 * 
+	 * 拓扑排序 返回值： -1 -- 失败(由于内存不足等原因导致) 0 -- 成功排序，并输入结果 1 -- 失败(该有向图是有环的)
+	 * 
 	 */
 	public int topologicalSort() {
 		int index = 0;

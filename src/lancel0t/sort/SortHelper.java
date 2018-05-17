@@ -148,7 +148,7 @@ public class SortHelper {
 	 * 
 	 * 平均时间复杂度：O(n^2)
 	 * 
-	 * 稳定性：稳定
+	 * 稳定性：不稳定
 	 */
 	public static void selectSort(int data[]) {
 
@@ -165,6 +165,15 @@ public class SortHelper {
 			if (min != i)
 				swap(data, i, min);
 		}
+	}
+
+	// 交换数组i下标元素和j下标元素
+	private static void swap(int[] data, int i, int j) {
+		if (i < data.length || j < data.length)
+			return;
+		int tmp = data[i];
+		data[j] = data[i];
+		data[i] = tmp;
 	}
 
 	/*
@@ -266,13 +275,79 @@ public class SortHelper {
 		tmp = null;
 	}
 
-	// 交换数组i下标元素和j下标元素
-	private static void swap(int[] data, int i, int j) {
-		if (i < data.length || j < data.length)
+	/*
+	 * 桶排序
+	 * 
+	 * 平均时间复杂度：O(n)
+	 * 
+	 * 稳定性：稳定
+	 */
+	public static void bucketSort(int[] data, int bucketSize) {
+		int[] buckets;
+
+		if (data == null)
 			return;
-		int tmp = data[i];
-		data[j] = data[i];
-		data[i] = tmp;
+
+		// 创建一个容量为max的数组buckets，并且将buckets中的所有数据都初始化为0。
+		buckets = new int[bucketSize];
+
+		// 1. 计数
+		for (int i = 0; i < data.length; i++)
+			buckets[data[i]]++;
+
+		// 2. 排序
+		for (int i = 0, j = 0; i < buckets.length; i++) {
+			while ((buckets[i]--) > 0) {
+				data[j++] = i;
+			}
+		}
+
+		buckets = null;
+	}
+
+	/*
+	 * 基数排序
+	 * 
+	 * 平均时间复杂度：O(n)
+	 * 
+	 * 稳定性：稳定
+	 */
+	public static void radixSort(int data[]) {
+
+		// 获取数组a中最大值
+		int max = data[0];
+		for (int i = 1; i < data.length; i++)
+			if (data[i] > max)
+				max = data[i];
+
+		// 从个位开始，对数组a按"指数"进行排序
+		// 指数： 按 个位进行排序时， exp=1； 按十位进行排序时，exp=10；...
+		for (int exp = 1; max / exp > 0; exp *= 10)
+			countSort(data, exp);
+	}
+
+	// 对数组按照"某个位数"进行排序(桶排序)
+	private static void countSort(int data[], int exp) {
+		int[] output = new int[data.length]; // 存储"被排序数据"的临时数组
+		int[] buckets = new int[10];
+
+		// 将数据出现的次数存储在buckets[]中
+		for (int i = 0; i < data.length; i++)
+			buckets[(data[i] / exp) % 10]++;
+
+		// 更改buckets[i]。目的是让更改后的buckets[i]的值，是该数据在output[]中的位置。
+		for (int i = 1; i < 10; i++)
+			buckets[i] += buckets[i - 1];
+
+		// 将数据存储到临时数组output[]中
+		for (int i = data.length - 1; i >= 0; i--) {
+			output[buckets[(data[i] / exp) % 10] - 1] = data[i];
+			buckets[(data[i] / exp) % 10]--;
+		}
+
+		// 将排序好的数据赋值给a[]
+		for (int i = 0; i < data.length; i++)
+			data[i] = output[i];
 	}
 
 	public static void main(String[] args) {
@@ -286,50 +361,64 @@ public class SortHelper {
 		System.out.printf("\n");
 
 		System.out.println("== 冒泡排序:");
-		tmp=data;
+		tmp = data;
 		bubbleSort(tmp);
 		for (i = 0; i < tmp.length; i++)
 			System.out.printf("%d ", tmp[i]);
 		System.out.printf("\n");
 
 		System.out.println("== 快速排序:");
-		tmp=data;
+		tmp = data;
 		quickSort(tmp);
 		for (i = 0; i < tmp.length; i++)
 			System.out.printf("%d ", tmp[i]);
 		System.out.printf("\n");
 
 		System.out.println("== 插入排序:");
-		tmp=data;
+		tmp = data;
 		insertSort(tmp);
 		for (i = 0; i < tmp.length; i++)
 			System.out.printf("%d ", tmp[i]);
 		System.out.printf("\n");
 
 		System.out.println("== 希尔排序:");
-		tmp=data;
+		tmp = data;
 		shellSort(tmp);
 		for (i = 0; i < tmp.length; i++)
 			System.out.printf("%d ", tmp[i]);
 		System.out.printf("\n");
 
 		System.out.println("== 选择排序:");
-		tmp=data;
+		tmp = data;
 		selectSort(tmp);
 		for (i = 0; i < tmp.length; i++)
 			System.out.printf("%d ", tmp[i]);
 		System.out.printf("\n");
 
 		System.out.println("== 堆排序:");
-		tmp=data;
+		tmp = data;
 		heapSort(tmp);
 		for (i = 0; i < tmp.length; i++)
 			System.out.printf("%d ", tmp[i]);
 		System.out.printf("\n");
 
 		System.out.println("== 合并排序:");
-		tmp=data;
+		tmp = data;
 		mergeSort(tmp);
+		for (i = 0; i < tmp.length; i++)
+			System.out.printf("%d ", tmp[i]);
+		System.out.printf("\n");
+
+		System.out.println("== 桶排序:");
+		tmp = data;
+		bucketSort(tmp, 999999);
+		for (i = 0; i < tmp.length; i++)
+			System.out.printf("%d ", tmp[i]);
+		System.out.printf("\n");
+
+		System.out.println("== 基数排序:");
+		tmp = data;
+		radixSort(tmp);
 		for (i = 0; i < tmp.length; i++)
 			System.out.printf("%d ", tmp[i]);
 		System.out.printf("\n");

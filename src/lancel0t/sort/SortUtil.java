@@ -7,7 +7,7 @@
  */
 package lancel0t.sort;
 
-public class SortHelper {
+public class SortUtil {
 
 	/*
 	 * 冒泡排序

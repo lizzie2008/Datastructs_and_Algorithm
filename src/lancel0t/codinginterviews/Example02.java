@@ -1,7 +1,7 @@
 /**
  * 
  * 【剑指Offer】面试题2 ： 实现Singleton 模式
- * 题目：设计一个类，我们只能生成该类的一个实例
+ * 【  题目描述 】设计一个类，我们只能生成该类的一个实例
  * 
  * @author lancel0t
  * @date 2018年5月22日
@@ -131,7 +131,7 @@ public class Example02 {
 		System.out.println(Singleton3.getInstance() == Singleton3.getInstance());
 		System.out.println(Singleton4.getInstance() == Singleton4.getInstance());
 		System.out.println(Singleton5.getInstance() == Singleton5.getInstance());
-		System.out.println(Singleton6.INSTANCE == Singleton6.INSTANCE);
+		//System.out.println(Singleton6.INSTANCE == Singleton6.INSTANCE);
 		System.out.println(Singleton7.getInstance() == Singleton7.getInstance());
 	}
 

@@ -1,56 +1,91 @@
 /**
  * 
- * 【剑指Offer】面试题5 ： 从尾到头打印链表
- * 【  题目描述 】输入个链表的头结点，从尾到头反过来打印出每个结点的值。
+ * 【剑指Offer】面试题5 ： 替换空格
+ * 【  题目描述 】请实现一个函数，把字符串中的每个空格替换成"%20"，
+ * 例如“We are happy.”，则输出“We%20are%20happy.”。
  * 
  * @author lancel0t
  * @date 2018年5月22日
  */
 package lancel0t.codinginterviews;
 
-import java.util.ArrayList;
-
 public class Example05 {
 
-	public class ListNode {
-		int val;
-		ListNode next = null;
-
-		ListNode(int val) {
-			this.val = val;
+	// 利用Java类库
+	public static String replaceSpace(StringBuffer str) {
+		// 找到空格出现的地方
+		while (str.indexOf(" ") != -1) {
+			int indexSpace = str.indexOf(" ");
+			str.replace(indexSpace, indexSpace + 1, "%20");
 		}
+
+		return str.toString();
 	}
 
-	public ArrayList<Integer> printListFromTailToHead(ListNode listNode) {
-		ArrayList<Integer> list = new ArrayList<Integer>();
-		addPrintList(listNode, list);
-		return list;
-	}
+	/*
+	 * 时间复杂度O(n)算法
+	 * length为字符数组的总容量
+	 * 异常返回-1，否则返回替换后字符数组长度
+	 */
+	public static int replaceSpace(char[] str, int length) {
 
-	// 递归
-	private void addPrintList(ListNode listNode, ArrayList<Integer> list) {
-		if (listNode != null) {
-			if (listNode.next != null) {
-				addPrintList(listNode.next, list);
+		// 有效性检查
+		if (str == null || length <= 0) {
+			return -1;
+		}
+
+		// 统计字符数组中的空白字符数
+		int originalLength = 0;
+		int numberOfBlank = 0;
+
+		for (int i = 0; str[i] != '\0';) {
+			originalLength++;
+			if (str[i++] == ' ')
+				numberOfBlank++;
+		}
+		// 计算替换空格后的长度
+		int newLength = originalLength + 2 * numberOfBlank;
+		if (newLength > length)
+			return -1;
+
+		int index1st = originalLength;
+		int index2nd = newLength;
+
+		// 替换空格
+		while (index1st >= 0 && index2nd > index1st) {
+			if (str[index1st] == ' ') {
+				str[index2nd--] = '0';
+				str[index2nd--] = '2';
+				str[index2nd--] = '%';
+			} else {
+				str[index2nd--] = str[index1st];
 			}
-			list.add(listNode.val);
+			index1st--;
 		}
+		return newLength;
 	}
 
 	public static void main(String[] args) {
-		Example05 exam = new Example05();
-		ListNode node1 = exam.new ListNode(1);
-		ListNode node2 = exam.new ListNode(2);
-		ListNode node3 = exam.new ListNode(3);
-		ListNode node4 = exam.new ListNode(4);
-		ListNode node5 = exam.new ListNode(5);
-		node1.next = node2;
-		node2.next = node3;
-		node3.next = node4;
-		node4.next = node5;
-		node1.next = node2;
-		for (Integer val : exam.printListFromTailToHead(node1)) {
-			System.out.print(val + " ");
-		}
+		// 测试1
+		System.out.println("====测试1：" + replaceSpace(new StringBuffer("we are happy.")));
+		
+		// 测试2
+		char[] str = new char[50];
+		str[0] = 'w';
+		str[1] = 'e';
+		str[2] = ' ';
+		str[3] = 'a';
+		str[4] = 'r';
+		str[5] = 'e';
+		str[6] = ' ';
+		str[7] = 'h';
+		str[8] = 'a';
+		str[9] = 'p';
+		str[10] = 'p';
+		str[11] = 'y';
+		str[12] = '.';
+		int len = replaceSpace(str, 50);
+		System.out.println("====测试2：" + new String(str).substring(0, len));
 	}
+
 }

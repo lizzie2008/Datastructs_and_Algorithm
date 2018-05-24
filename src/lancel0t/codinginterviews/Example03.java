@@ -1,8 +1,10 @@
 /**
  * 
- * 【剑指Offer】面试题3 ：二维数组中的查找
- * 【  题目描述 】在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。
- * 请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。
+ * 【剑指Offer】面试题3 ：数组中重复的数字
+ * 【  题目描述 】在一个长度为n的数组里的所有数字都在0到n-1的范围内。 
+ * 数组中某些数字是重复的，但不知道有几个数字是重复的。也不知道每个数字重复几次。
+ * 请找出数组中任意一个重复的数字。 
+ * 例如，如果输入长度为7的数组{2,3,1,0,2,5,3}，那么对应的输出是第一个重复的数字2。
  * 
  * @author lancel0t
  * @date 2018年5月22日
@@ -12,41 +14,49 @@ package lancel0t.codinginterviews;
 public class Example03 {
 
 	/*
-	 * 定义数组下标i,j始终指向矩阵右上角的位置
-	 * 如果matrix[i][j]大于目标值，往前面的列 查找
-	 * 如果matrix[i][j]小于目标值，往后面的行查找
+	 * 思路1：利用数组排序，时间复杂度：O(nlogn)，空间复杂度:O(1)
+	 * 思路2：利用哈希表，时间复杂度：O(n)，空间复杂度:O(n)
+	 * 
+	 * 推荐思路：0~n-1正常的排序应该是A[i]=i；因此可以通过交换的方式，将它们都各自放回属于自己的位置；
+	 * 时间复杂度：O(n)，空间复杂度：O(1)
 	 */
-	public static boolean find(int[][] matrix, int number) {
-		// 有效性检查
-		if (matrix == null || matrix.length <= 0 || matrix[0].length <= 0)
+	public boolean duplicate(int numbers[], int length, int[] duplication) {
+		if (numbers == null || length <= 0)
 			return false;
 
-		int rows = matrix.length;
-		int cols = matrix[0].length;
-
-		// i,j始终指向矩阵右上角的位置
-		for (int i = 0, j = cols - 1; i <= rows - 1 && j >= 0;) {
-			if (matrix[i][j] > number) {
-				j--;
-			} else if (matrix[i][j] < number) {
-				i++;
-			} else {
-				return true;
+		// 从头到尾扫描数组
+		for (int i = 0; i < length; i++) {
+			// 记录下标i的值
+			int k = numbers[i];
+			// 如果numbers[i]不等于i
+			if (numbers[i] != i) {
+				// 判断与numbers[k]是否相等
+				if (numbers[i] == numbers[k]) {
+					// 相等表示找到重复的元素，并返回
+					duplication[0] = numbers[i];
+					return true;
+				} else {
+					// 不是重复元素，交换位置
+					numbers[i] = numbers[k];
+					numbers[k] = k;
+				}
 			}
 		}
-
 		return false;
 	}
 
 	public static void main(String[] args) {
-		int[][] matrix = { { 1, 2, 8, 9 }, { 2, 4, 9, 12 }, { 4, 7, 10, 13 }, { 6, 8, 11, 15 } };
-		System.out.println(find(matrix, 7)); // 要查找的数在数组中
-		System.out.println(find(matrix, 5)); // 要查找的数不在数组中
-		System.out.println(find(matrix, 1)); // 要查找的数是数组中最小的数字
-		System.out.println(find(matrix, 15)); // 要查找的数是数组中最大的数字
-		System.out.println(find(matrix, 0)); // 要查找的数比数组中最小的数字还小
-		System.out.println(find(matrix, 16)); // 要查找的数比数组中最大的数字还大
-		System.out.println(find(null, 16)); // 健壮性测试，输入空指针
+		Example03 exam = new Example03();
+
+		int[] numbers1 = { 2, 3, 1, 0, 2, 5, 3 };
+		int[] numbers2 = { 2, 1, 3, 1, 4 };
+		int[] duplication = new int[1];
+		if (exam.duplicate(numbers1, numbers1.length, duplication)) {
+			System.out.println("==========数组1含有重复元素：" + duplication[0]);
+		}
+		if (exam.duplicate(numbers2, numbers2.length, duplication)) {
+			System.out.println("==========数组2含有重复元素：" + duplication[0]);
+		}
 	}
 
 }

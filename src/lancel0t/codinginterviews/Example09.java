@@ -1,36 +1,60 @@
 /**
  * 
- * 【剑指Offer】面试题9 ： 斐波那契数列
- * 【  题目描述 】大家都知道斐波那契数列，现在要求输入一个整数n，请你输出斐波那契数列的第n项。
+ * 【剑指Offer】面试题9：用两个栈实现队列
+ * 【  题目描述 】用两个栈实现一个队列。队列的声明如下，请实现它的两个函数appendTail 和deleteHead，
+ * 分别完成在队列尾部插入结点和在队列头部删除结点的功能。
  * 
  * @author lancel0t
  * @date 2018年5月22日
  */
 package lancel0t.codinginterviews;
 
+import java.util.Stack;
+
 public class Example09 {
 
-	// 迭代非递归
-	public int Fibonacci(int n) {
+	Stack<Integer> stack1 = new Stack<Integer>();
+	Stack<Integer> stack2 = new Stack<Integer>();
 
-		if (n < 2)
-			return n;
+	// 入队列
+	public void push(int node) {
+		// 直接压入stack1
+		stack1.push(node);
+	}
 
-		int fibn = 0;
-		for (int fib0 = 0, fib1 = 1, i = 2; i <= n; i++) {
-			fibn = fib0 + fib1;
-			fib0 = fib1;
-			fib1 = fibn;
+	// 出队列
+	public int pop() {
+
+		// 如果第2个栈没有数据，依次将第1个栈元素弹出，并压入第2个栈
+		if (stack2.size() <= 0) {
+			while (stack1.size() > 0) {
+				int ele = stack1.pop();
+				stack2.push(ele);
+			}
 		}
-		return fibn;
+
+		// 如果栈1和栈2都没有元素，此时栈2为空
+		if (stack2.size() == 0)
+			throw new RuntimeException("队列为空！");
+
+		// 弹出第2个栈顶元素即为最早入队列的元素
+		return stack2.pop();
 	}
 
 	public static void main(String[] args) {
 
 		Example09 exam = new Example09();
 
-		for (int i = 0; i < 20; i++) {
-			System.out.print(exam.Fibonacci(i) + " ");
-		}
+		exam.push(1);
+		exam.push(2);
+		exam.push(3);
+		System.out.println("== 出队列：" + exam.pop());
+		exam.push(4);
+		exam.push(5);
+		System.out.println("== 出队列：" + exam.pop());
+		System.out.println("== 出队列：" + exam.pop());
+		System.out.println("== 出队列：" + exam.pop());
+		System.out.println("== 出队列：" + exam.pop());
+
 	}
 }

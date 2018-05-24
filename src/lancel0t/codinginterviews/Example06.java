@@ -1,87 +1,56 @@
 /**
  * 
- * 【剑指Offer】面试题6 ：重建二叉树
- * 【  题目描述 】输入某二叉树的前序遍历和中序遍历的结果，请重建出该二叉树。
- * 假设输入的前序遍历和中序遍历的结果中都不含重复的数字。
- * 例如：前序遍历序列｛ 1, 2, 4, 7, 3, 5, 6, 8｝和中序遍历序列｛4, 7, 2, 1, 5, 3, 8，6}，
- * 重建出下图所示的二叉树并输出它的头结点。
+ * 【剑指Offer】面试题6 ： 从尾到头打印链表
+ * 【  题目描述 】输入个链表的头结点，从尾到头反过来打印出每个结点的值。
  * 
  * @author lancel0t
  * @date 2018年5月22日
  */
 package lancel0t.codinginterviews;
 
+import java.util.ArrayList;
+
 public class Example06 {
 
-	public class TreeNode {
+	public class ListNode {
 		int val;
-		TreeNode left;
-		TreeNode right;
+		ListNode next = null;
 
-		TreeNode(int x) {
-			val = x;
+		ListNode(int val) {
+			this.val = val;
 		}
 	}
 
-	public TreeNode reConstructBinaryTree(int[] pre, int[] in) {
-		// 输入的合法性判断，两个数组都不能为空，长度相等且有数据
-		if (pre == null || in == null || pre.length != in.length || pre.length < 1) {
-			return null;
-		}
-
-		return construct(pre, in, 0, pre.length - 1, 0, in.length - 1);
+	public ArrayList<Integer> printListFromTailToHead(ListNode listNode) {
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		addPrintList(listNode, list);
+		return list;
 	}
 
-	// 递归法，根据前序和中序，分别生成左右子树
-	private TreeNode construct(int[] preOrder, int[] inOrder, int preStart, int preEnd, int inStart, int inEnd) {
-		if (preStart > preEnd) {
-			return null;
+	// 递归
+	private void addPrintList(ListNode listNode, ArrayList<Integer> list) {
+		if (listNode != null) {
+			if (listNode.next != null) {
+				addPrintList(listNode.next, list);
+			}
+			list.add(listNode.val);
 		}
-
-		// 前序遍历第1个节点为根节点
-		int rootVal = preOrder[preStart];
-
-		// 获取根节点在中序遍历的索引位置
-		int index = inStart;
-		while (index <= inEnd && inOrder[index] != rootVal)
-			index++;
-
-		if (index > inEnd) {
-			throw new RuntimeException("Invalid input");
-		}
-
-		TreeNode root = new TreeNode(rootVal);
-
-		// 递归构建当前根结点的左子树，左子树的元素个数：index-inStart+1个
-		// 左子树对应的前序遍历的位置在[preStart + 1, preStart + index - inStart]
-		// 左子树对应的中序遍历的位置在[inStart, index-1]
-		root.left = construct(preOrder, inOrder, preStart + 1, preStart + index - inStart, inStart, index - 1);
-		// 递归构建当前根结点的右子树，右子树的元素个数：inEnd-index个
-		// 右子树对应的前序遍历的位置在[preStart + index - inStart + 1, preEnd]
-		// 右子树对应的中序遍历的位置在[index+1, inEnd]
-		root.right = construct(preOrder, inOrder, preStart + index - inStart + 1, preEnd, index + 1, inEnd);
-
-		return root;
-	}
-
-	// 中序遍历打印树
-	public void printTree(TreeNode root) {
-		if (root != null) {
-			printTree(root.left);
-			System.out.print(root.val + " ");
-			printTree(root.right);
-		}
-
 	}
 
 	public static void main(String[] args) {
-
 		Example06 exam = new Example06();
-
-		int[] preorder = { 10, 6, 4, 8, 14, 12, 16 };
-		int[] inorder = { 4, 6, 8, 10, 12, 14, 16 };
-		TreeNode root = exam.reConstructBinaryTree(preorder, inorder);
-		System.out.print("====中序遍历：");
-		exam.printTree(root);
+		ListNode node1 = exam.new ListNode(1);
+		ListNode node2 = exam.new ListNode(2);
+		ListNode node3 = exam.new ListNode(3);
+		ListNode node4 = exam.new ListNode(4);
+		ListNode node5 = exam.new ListNode(5);
+		node1.next = node2;
+		node2.next = node3;
+		node3.next = node4;
+		node4.next = node5;
+		node1.next = node2;
+		for (Integer val : exam.printListFromTailToHead(node1)) {
+			System.out.print(val + " ");
+		}
 	}
 }

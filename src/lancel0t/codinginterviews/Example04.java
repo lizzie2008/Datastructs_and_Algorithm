@@ -1,8 +1,8 @@
 /**
  * 
- * 【剑指Offer】面试题4 ： 替换空格
- * 【  题目描述 】请实现一个函数，把字符串中的每个空格替换成"%20"，
- * 例如“We are happy.”，则输出“We%20are%20happy.”。
+ * 【剑指Offer】面试题4 ：二维数组中的查找
+ * 【  题目描述 】在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。
+ * 请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。
  * 
  * @author lancel0t
  * @date 2018年5月22日
@@ -11,81 +11,42 @@ package lancel0t.codinginterviews;
 
 public class Example04 {
 
-	// 利用Java类库
-	public static String replaceSpace(StringBuffer str) {
-		// 找到空格出现的地方
-		while (str.indexOf(" ") != -1) {
-			int indexSpace = str.indexOf(" ");
-			str.replace(indexSpace, indexSpace + 1, "%20");
-		}
-
-		return str.toString();
-	}
-
 	/*
-	 * 时间复杂度O(n)算法
-	 * length为字符数组的总容量
-	 * 异常返回-1，否则返回替换后字符数组长度
+	 * 定义数组下标i,j始终指向矩阵右上角的位置
+	 * 如果matrix[i][j]大于目标值，往前面的列 查找
+	 * 如果matrix[i][j]小于目标值，往后面的行查找
 	 */
-	public static int replaceSpace(char[] str, int length) {
-
+	public static boolean find(int[][] matrix, int number) {
 		// 有效性检查
-		if (str == null || length <= 0) {
-			return -1;
-		}
+		if (matrix == null || matrix.length <= 0 || matrix[0].length <= 0)
+			return false;
 
-		// 统计字符数组中的空白字符数
-		int originalLength = 0;
-		int numberOfBlank = 0;
+		int rows = matrix.length;
+		int cols = matrix[0].length;
 
-		for (int i = 0; str[i] != '\0';) {
-			originalLength++;
-			if (str[i++] == ' ')
-				numberOfBlank++;
-		}
-		// 计算替换空格后的长度
-		int newLength = originalLength + 2 * numberOfBlank;
-		if (newLength > length)
-			return -1;
-
-		int index1st = originalLength;
-		int index2nd = newLength;
-
-		// 替换空格
-		while (index1st >= 0 && index2nd > index1st) {
-			if (str[index1st] == ' ') {
-				str[index2nd--] = '0';
-				str[index2nd--] = '2';
-				str[index2nd--] = '%';
+		// i,j始终指向矩阵右上角的位置
+		for (int i = 0, j = cols - 1; i <= rows - 1 && j >= 0;) {
+			if (matrix[i][j] > number) {
+				j--;
+			} else if (matrix[i][j] < number) {
+				i++;
 			} else {
-				str[index2nd--] = str[index1st];
+				return true;
 			}
-			index1st--;
 		}
-		return newLength;
+
+		return false;
 	}
 
 	public static void main(String[] args) {
-		// 测试1
-		System.out.println("====测试1：" + replaceSpace(new StringBuffer("we are happy.")));
-		
-		// 测试2
-		char[] str = new char[50];
-		str[0] = 'w';
-		str[1] = 'e';
-		str[2] = ' ';
-		str[3] = 'a';
-		str[4] = 'r';
-		str[5] = 'e';
-		str[6] = ' ';
-		str[7] = 'h';
-		str[8] = 'a';
-		str[9] = 'p';
-		str[10] = 'p';
-		str[11] = 'y';
-		str[12] = '.';
-		int len = replaceSpace(str, 50);
-		System.out.println("====测试2：" + new String(str).substring(0, len));
+		int[][] matrix = { { 1, 2, 8, 9 }, { 2, 4, 9, 12 }, { 4, 7, 10, 13 }, { 6, 8, 11, 15 } };
+		System.out.println(find(matrix, 7)); // 要查找的数在数组中
+		System.out.println(find(matrix, 5)); // 要查找的数不在数组中
+		System.out.println(find(matrix, 1)); // 要查找的数是数组中最小的数字
+		System.out.println(find(matrix, 15)); // 要查找的数是数组中最大的数字
+		System.out.println(find(matrix, 0)); // 要查找的数比数组中最小的数字还小
+		System.out.println(find(matrix, 16)); // 要查找的数比数组中最大的数字还大
+		System.out.println(find(null, 16)); // 健壮性测试，输入空指针
 	}
 
 }

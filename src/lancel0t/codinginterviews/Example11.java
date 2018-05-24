@@ -1,6 +1,6 @@
 /**
  * 
- * 【剑指Offer】面试题8 : 旋转数组的最小数字
+ * 【剑指Offer】面试题11 : 旋转数组的最小数字
  * 【  题目描述 】把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。 
  * 输入一个非递减排序的数组的一个旋转，输出旋转数组的最小元素。 
  * 例如数组{3,4,5,1,2}为{1,2,3,4,5}的一个旋转，该数组的最小值为1。 
@@ -11,7 +11,7 @@
  */
 package lancel0t.codinginterviews;
 
-public class Example08 {
+public class Example11 {
 
 	/*
 	 * 一般解法时间复杂度O(n)
@@ -56,7 +56,7 @@ public class Example08 {
 
 	public static void main(String[] args) {
 
-		Example08 exam = new Example08();
+		Example11 exam = new Example11();
 
 		// 典型输入，单调升序的数组的一个旋转
 		int[] array1 = { 3, 4, 5, 1, 2 };

@@ -16,19 +16,19 @@ public class Example04 {
 	 * 如果matrix[i][j]大于目标值，往前面的列 查找
 	 * 如果matrix[i][j]小于目标值，往后面的行查找
 	 */
-	public static boolean find(int[][] matrix, int number) {
+	public boolean Find(int target, int[][] array) {
 		// 有效性检查
-		if (matrix == null || matrix.length <= 0 || matrix[0].length <= 0)
+		if (array == null || array.length <= 0 || array[0].length <= 0)
 			return false;
 
-		int rows = matrix.length;
-		int cols = matrix[0].length;
+		int rows = array.length;
+		int cols = array[0].length;
 
 		// i,j始终指向矩阵右上角的位置
 		for (int i = 0, j = cols - 1; i <= rows - 1 && j >= 0;) {
-			if (matrix[i][j] > number) {
+			if (array[i][j] > target) {
 				j--;
-			} else if (matrix[i][j] < number) {
+			} else if (array[i][j] < target) {
 				i++;
 			} else {
 				return true;
@@ -39,14 +39,15 @@ public class Example04 {
 	}
 
 	public static void main(String[] args) {
+		Example04 exam = new Example04();
 		int[][] matrix = { { 1, 2, 8, 9 }, { 2, 4, 9, 12 }, { 4, 7, 10, 13 }, { 6, 8, 11, 15 } };
-		System.out.println(find(matrix, 7)); // 要查找的数在数组中
-		System.out.println(find(matrix, 5)); // 要查找的数不在数组中
-		System.out.println(find(matrix, 1)); // 要查找的数是数组中最小的数字
-		System.out.println(find(matrix, 15)); // 要查找的数是数组中最大的数字
-		System.out.println(find(matrix, 0)); // 要查找的数比数组中最小的数字还小
-		System.out.println(find(matrix, 16)); // 要查找的数比数组中最大的数字还大
-		System.out.println(find(null, 16)); // 健壮性测试，输入空指针
+		System.out.println(exam.Find(7, matrix)); // 要查找的数在数组中
+		System.out.println(exam.Find(5, matrix)); // 要查找的数不在数组中
+		System.out.println(exam.Find(1, matrix)); // 要查找的数是数组中最小的数字
+		System.out.println(exam.Find(15, matrix)); // 要查找的数是数组中最大的数字
+		System.out.println(exam.Find(0, matrix)); // 要查找的数比数组中最小的数字还小
+		System.out.println(exam.Find(16, matrix)); // 要查找的数比数组中最大的数字还大
+		System.out.println(exam.Find(16, null)); // 健壮性测试，输入空指针
 	}
 
 }

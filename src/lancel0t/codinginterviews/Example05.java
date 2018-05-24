@@ -12,7 +12,7 @@ package lancel0t.codinginterviews;
 public class Example05 {
 
 	// 利用Java类库
-	public static String replaceSpace(StringBuffer str) {
+	public String replaceSpace(StringBuffer str) {
 		// 找到空格出现的地方
 		while (str.indexOf(" ") != -1) {
 			int indexSpace = str.indexOf(" ");
@@ -27,7 +27,7 @@ public class Example05 {
 	 * length为字符数组的总容量
 	 * 异常返回-1，否则返回替换后字符数组长度
 	 */
-	public static int replaceSpace(char[] str, int length) {
+	public int replaceSpace(char[] str, int length) {
 
 		// 有效性检查
 		if (str == null || length <= 0) {
@@ -66,9 +66,11 @@ public class Example05 {
 	}
 
 	public static void main(String[] args) {
+
+		Example05 exam = new Example05();
 		// 测试1
-		System.out.println("====测试1：" + replaceSpace(new StringBuffer("we are happy.")));
-		
+		System.out.println("====测试1：" + exam.replaceSpace(new StringBuffer("we are happy.")));
+
 		// 测试2
 		char[] str = new char[50];
 		str[0] = 'w';
@@ -84,7 +86,7 @@ public class Example05 {
 		str[10] = 'p';
 		str[11] = 'y';
 		str[12] = '.';
-		int len = replaceSpace(str, 50);
+		int len = exam.replaceSpace(str, 50);
 		System.out.println("====测试2：" + new String(str).substring(0, len));
 	}
 

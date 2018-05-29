@@ -43,7 +43,7 @@ public class PrintMatrixClockwisly {
 		}
 
 		// 从上到下打印一列
-		if (start < endX) {
+		if (start < endY) {
 			for (int i = start + 1; i <= endY; i++) {
 				System.out.print(matrix[i][endX] + " ");
 			}
